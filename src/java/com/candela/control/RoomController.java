@@ -1,4 +1,4 @@
-package com.candela;
+package com.candela.control;
 
 import com.candela.model.Room;
 import com.candela.model.Scene;

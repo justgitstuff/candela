@@ -2,7 +2,7 @@ package com.jrako.candela;
 
 import java.util.List;
 
-import com.candela.SceneController;
+import com.candela.control.SceneController;
 import com.candela.model.House;
 import com.candela.model.Room;
 import com.candela.model.Scene;

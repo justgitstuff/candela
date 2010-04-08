@@ -1,6 +1,11 @@
 package com.jrako.candela;
 
+import java.util.List;
+
+import com.candela.model.Channel;
+import com.candela.model.House;
 import com.candela.model.Room;
+import com.candela.model.Scene;
 
 public class RakoRoom implements Room {
 
@@ -44,6 +49,24 @@ public class RakoRoom implements Room {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Channel> getChannels() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public House getHouse() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Scene> getScenes() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

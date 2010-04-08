@@ -1,6 +1,9 @@
 package com.jrako.candela;
 
+import java.util.List;
+
 import com.candela.model.House;
+import com.candela.model.Room;
 
 public class RakoHouse implements House {
 
@@ -44,6 +47,12 @@ public class RakoHouse implements House {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Room> getRooms() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

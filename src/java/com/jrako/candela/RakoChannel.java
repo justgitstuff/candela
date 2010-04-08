@@ -1,6 +1,7 @@
 package com.jrako.candela;
 
 import com.candela.model.Channel;
+import com.candela.model.Room;
 
 public class RakoChannel implements Channel {
 
@@ -44,6 +45,12 @@ public class RakoChannel implements Channel {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Room getRoom() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

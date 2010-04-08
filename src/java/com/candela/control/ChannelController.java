@@ -1,4 +1,4 @@
-package com.candela;
+package com.candela.control;
 
 import java.util.logging.Level;
 

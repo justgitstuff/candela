@@ -1,5 +1,9 @@
 package com.jrako.candela;
 
+import java.util.List;
+
+import com.candela.model.Channel;
+import com.candela.model.Room;
 import com.candela.model.Scene;
 
 public class RakoScene implements Scene {
@@ -44,6 +48,18 @@ public class RakoScene implements Scene {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public List<Channel> getChannels() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Room getRoom() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }
