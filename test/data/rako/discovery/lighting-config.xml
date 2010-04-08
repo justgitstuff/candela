@@ -1,0 +1,55 @@
+<rooms>
+	<Room id="4">
+		<Type>Lights</Type>
+		<Title>Hall</Title>
+		<Scene id="1">
+			<Name>Day</Name>
+		</Scene>
+		<Scene id="2">
+			<Name>Evening</Name>
+		</Scene>
+		<Scene id="3">
+			<Name>Night</Name>
+		</Scene>
+		<Scene id="4">
+			<Name>Cleaning</Name>
+		</Scene>
+		<Channel id="1">
+			<Name>Downlights</Name>
+		</Channel>
+		<Channel id="2">
+			<Name>Wall lights</Name>
+		</Channel>
+		<Channel id="3">
+			<Name>Cupboard light</Name>
+		</Channel>
+	</Room>
+	<Room id="5">
+		<Type>Lights</Type>
+		<Title>Lounge</Title>
+		<Scene id="1">
+			<Name>Day</Name>
+		</Scene>
+		<Scene id="2">
+			<Name>Evening</Name>
+		</Scene>
+		<Scene id="3">
+			<Name>Movie</Name>
+		</Scene>
+		<Scene id="4">
+			<Name>Cleaning</Name>
+		</Scene>
+		<Channel id="1">
+			<Name>Coffee table</Name>
+		</Channel>
+		<Channel id="2">
+			<Name>Washer R</Name>
+		</Channel>
+		<Channel id="3">
+			<Name>Washer G</Name>
+		</Channel>
+		<Channel id="4">
+			<Name>Washer B</Name>
+		</Channel>
+	</Room>
+</rooms>
