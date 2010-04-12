@@ -1,14 +1,21 @@
 package com.candela;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 
 public final class DefaultHouseFactory implements HouseFactory {
 
     public static final String FACTORY_CLASS_NAME_KEY = "com.candela.house.factory.class";
+    private static final String PROPERTIES_FILE_NAME = "candela.propeties";
 
     @Override
     public House newInstance() throws ConfigurationException {
         House house = null;
-        String clazzName = System.getProperty(FACTORY_CLASS_NAME_KEY);
+        String clazzName = resolveClassName();
         try {
             Class<? extends HouseFactory> clazz = (Class<? extends HouseFactory>) Class.forName(clazzName);
             house = newInstance(clazz);
@@ -29,6 +36,24 @@ public final class DefaultHouseFactory implements HouseFactory {
             throw new ConfigurationException("TODO", e);
         }
         return house;
+    }
+
+    private String resolveClassName() {
+        String clazzName = System.getProperty(FACTORY_CLASS_NAME_KEY);
+        if (StringUtils.isEmpty(clazzName)) {
+            InputStream stream = null;
+            try {
+                stream = getClass().getResourceAsStream(PROPERTIES_FILE_NAME);
+                Properties props = new Properties();
+                props.load(stream);
+                clazzName = props.getProperty(FACTORY_CLASS_NAME_KEY);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                IOUtils.closeQuietly(stream);
+            }
+        }
+        return clazzName;
     }
 
 }
