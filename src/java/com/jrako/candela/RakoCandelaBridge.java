@@ -54,24 +54,12 @@ public class RakoCandelaBridge implements HouseController, RoomController, Chann
     }
 
     @Override
-    public void on(House house) {
-        RakoHouse rakoHouse = (RakoHouse) house;
-        List<RakoCommand> commands = Lists.newArrayList();
-        commands.add(RakoCommand.newInstance(RakoCommandType.HOUSE, rakoHouse.getId()));
-    }
-
-    @Override
     public void off(Room room) {
         RakoRoom rakoRoom = (RakoRoom) room;
     }
 
     @Override
-    public void on(Room room) {
-        RakoRoom rakoRoom = (RakoRoom) room;
-    }
-
-    @Override
-    public void scene(Scene scene) {
+    public void setScene(Scene scene) {
         RakoScene rakoScene = (RakoScene) scene;
     }
 
