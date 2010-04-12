@@ -1,4 +1,4 @@
-package com.candela.discovery;
+package com.candela;
 
 public class ConfigurationException extends Exception {
 

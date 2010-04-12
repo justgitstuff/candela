@@ -14,8 +14,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import com.candela.ConfigurationException;
 import com.candela.House;
-import com.candela.discovery.ConfigurationException;
 import com.candela.discovery.HouseConfigurationResolver;
 
 public class AprHouseConfigurationResolver implements HouseConfigurationResolver {

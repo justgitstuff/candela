@@ -1,11 +1,10 @@
 package com.candela.control;
 
-import java.util.logging.Level;
-
 import com.candela.Channel;
+import com.candela.Level;
 
 public interface ChannelController {
 
-    public void setChannel(Channel channel, Level level);
+    public void setChannelLevel(Channel channel, Level level);
 
 }
