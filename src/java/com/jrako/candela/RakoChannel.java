@@ -1,31 +1,42 @@
 package com.jrako.candela;
 
-import com.candela.model.Channel;
-import com.candela.model.Room;
+import com.candela.Channel;
+import com.candela.Room;
 
 public class RakoChannel implements Channel {
 
-    static final RakoChannel UNSET = new RakoChannel(-1);
+    static final RakoChannel UNSET = new RakoChannel();
 
-    private final int channelId;
+    private final int id;
+    private final String name;
+    private RakoRoom room = RakoRoom.UNSET;
 
-    private RakoChannel(int channelId) {
-        this.channelId = channelId;
+    private RakoChannel() {
+        this(-1, "");
     }
 
-    static RakoChannel valueOf(int channelId) {
-        return new RakoChannel(channelId);
+    public RakoChannel(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    int getChannelId() {
-        return channelId;
+    public int getId() {
+        return id;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + channelId;
+        result = prime * result + id;
         return result;
     }
 
@@ -41,16 +52,14 @@ public class RakoChannel implements Channel {
             return false;
         }
         RakoChannel other = (RakoChannel) obj;
-        if (channelId != other.channelId) {
+        if (id != other.id) {
             return false;
         }
         return true;
     }
 
-    @Override
-    public Room getRoom() {
-        // TODO Auto-generated method stub
-        return null;
+    void setRoom(RakoRoom room) {
+        this.room = room;
     }
 
 }

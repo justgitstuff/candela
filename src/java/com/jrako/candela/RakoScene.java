@@ -1,34 +1,42 @@
 package com.jrako.candela;
 
-import java.util.List;
-
-import com.candela.model.Channel;
-import com.candela.model.Room;
-import com.candela.model.Scene;
+import com.candela.Room;
+import com.candela.Scene;
 
 public class RakoScene implements Scene {
 
-    static final RakoScene UNSET = new RakoScene(-1);
+    static final RakoScene UNSET = new RakoScene();
 
-    private final int sceneId;
+    private final int id;
+    private final String name;
+    private RakoRoom room = RakoRoom.UNSET;
 
-    private RakoScene(int sceneId) {
-        this.sceneId = sceneId;
+    private RakoScene() {
+        this(-1, "");
     }
 
-    static RakoScene valueOf(int sceneId) {
-        return new RakoScene(sceneId);
+    public RakoScene(int id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    int getRoomId() {
-        return sceneId;
+    public int getId() {
+        return id;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + sceneId;
+        result = prime * result + id;
         return result;
     }
 
@@ -44,22 +52,14 @@ public class RakoScene implements Scene {
             return false;
         }
         RakoScene other = (RakoScene) obj;
-        if (sceneId != other.sceneId) {
+        if (id != other.id) {
             return false;
         }
         return true;
     }
 
-    @Override
-    public List<Channel> getChannels() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Room getRoom() {
-        // TODO Auto-generated method stub
-        return null;
+    void setRoom(RakoRoom room) {
+        this.room = room;
     }
 
 }

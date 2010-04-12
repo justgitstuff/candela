@@ -1,7 +1,7 @@
 package com.candela.control;
 
-import com.candela.model.Room;
-import com.candela.model.Scene;
+import com.candela.Room;
+import com.candela.Scene;
 
 public interface RoomController {
 

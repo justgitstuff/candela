@@ -2,7 +2,7 @@ package com.candela.control;
 
 import java.util.logging.Level;
 
-import com.candela.model.Channel;
+import com.candela.Channel;
 
 public interface ChannelController {
 

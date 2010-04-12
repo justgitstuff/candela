@@ -1,35 +1,71 @@
 package com.jrako.candela;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.candela.model.Channel;
-import com.candela.model.House;
-import com.candela.model.Room;
-import com.candela.model.Scene;
+import com.candela.Channel;
+import com.candela.House;
+import com.candela.Room;
+import com.candela.Scene;
 
 public class RakoRoom implements Room {
 
-    static final RakoRoom UNSET = new RakoRoom(-1);
+    static final RakoRoom UNSET = new RakoRoom();
 
-    private final int roomId;
+    private final int id;
+    private final String name;
+    private final String type;
+    private final List<? extends Scene> scenes;
+    private final List<? extends Channel> channels;
+    private RakoHouse house;
 
-    private RakoRoom(int roomId) {
-        this.roomId = roomId;
+    private RakoRoom() {
+        this(-1, "", "", new ArrayList<RakoScene>(), new ArrayList<RakoChannel>());
     }
 
-    static RakoRoom valueOf(int roomId) {
-        return new RakoRoom(roomId);
+    public RakoRoom(int id, String name, String type, List<RakoScene> scenes, List<RakoChannel> channels) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.scenes = scenes;
+        this.channels = channels;
+        for (RakoScene scene : scenes) {
+            scene.setRoom(this);
+        }
+        for (RakoChannel channel : channels) {
+            channel.setRoom(this);
+        }
     }
 
-    int getRoomId() {
-        return roomId;
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public House getHouse() {
+        return house;
+    }
+
+    public List<? extends Scene> getScenes() {
+        return scenes;
+    }
+
+    public List<? extends Channel> getChannels() {
+        return channels;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + roomId;
+        result = prime * result + id;
         return result;
     }
 
@@ -45,28 +81,14 @@ public class RakoRoom implements Room {
             return false;
         }
         RakoRoom other = (RakoRoom) obj;
-        if (roomId != other.roomId) {
+        if (id != other.id) {
             return false;
         }
         return true;
     }
 
-    @Override
-    public List<Channel> getChannels() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public House getHouse() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Scene> getScenes() {
-        // TODO Auto-generated method stub
-        return null;
+    void setHouse(RakoHouse house) {
+        this.house = house;
     }
 
 }

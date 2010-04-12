@@ -5,6 +5,6 @@ import java.net.UnknownHostException;
 
 public interface NetbiosNameResolver {
 
-    InetAddress resolveName(String name) throws UnknownHostException;
+    InetAddress resolveAddress(String netbiosName) throws UnknownHostException;
 
 }

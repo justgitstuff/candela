@@ -8,9 +8,9 @@ import jcifs.netbios.NbtAddress;
 public class JcifsNetbiosNameResolver implements NetbiosNameResolver {
 
     @Override
-    public InetAddress resolveName(String name) throws UnknownHostException {
-        InetAddress addr = NbtAddress.getByName(name).getInetAddress();
-        return addr;
+    public InetAddress resolveAddress(String netbiosName) throws UnknownHostException {
+        InetAddress address = NbtAddress.getByName(netbiosName).getInetAddress();
+        return address;
     }
 
 }

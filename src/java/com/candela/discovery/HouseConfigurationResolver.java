@@ -1,9 +1,9 @@
 package com.candela.discovery;
 
-import com.candela.model.House;
+import com.candela.House;
 
 public interface HouseConfigurationResolver {
 
-    House resolve();
+    House resolve() throws ConfigurationException;
 
 }

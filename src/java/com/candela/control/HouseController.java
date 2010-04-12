@@ -1,6 +1,6 @@
 package com.candela.control;
 
-import com.candela.model.House;
+import com.candela.House;
 
 public interface HouseController {
 

@@ -2,10 +2,10 @@ package com.jrako.candela;
 
 import java.util.List;
 
+import com.candela.House;
+import com.candela.Room;
+import com.candela.Scene;
 import com.candela.control.SceneController;
-import com.candela.model.House;
-import com.candela.model.Room;
-import com.candela.model.Scene;
 import com.google.common.collect.Lists;
 import com.jrako.command.RakoCommand;
 import com.jrako.command.RakoCommandType;
