@@ -9,6 +9,7 @@ import com.candela.Room;
 public class RakoHouse implements House {
 
     static final RakoHouse UNSET = new RakoHouse();
+    static final RakoHouse MASTER = new RakoHouse(0, new ArrayList<RakoRoom>());
 
     private final int id;
     private final List<? extends Room> rooms;

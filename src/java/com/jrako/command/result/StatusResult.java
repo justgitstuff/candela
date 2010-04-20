@@ -17,7 +17,7 @@ public class StatusResult implements RakoResult {
 
     private final int channel;
 
-    private final int gr;
+    private final int group;
 
     StatusResult(String input) throws RakoControllerException {
         try {
@@ -25,7 +25,7 @@ public class StatusResult implements RakoResult {
             house = Integer.parseInt(matcher.group(1));
             room = Integer.parseInt(matcher.group(2));
             channel = Integer.parseInt(matcher.group(3));
-            gr = Integer.parseInt(matcher.group(4));
+            group = Integer.parseInt(matcher.group(4));
         } catch (NumberFormatException nfX) {
             throw new RakoControllerException("Could not understand: " + input, nfX);
         }
@@ -43,8 +43,8 @@ public class StatusResult implements RakoResult {
         return channel;
     }
 
-    public int getGr() {
-        return gr;
+    public int getGroup() {
+        return group;
     }
 
 }

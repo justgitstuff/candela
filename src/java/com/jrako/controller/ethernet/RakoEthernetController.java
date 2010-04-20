@@ -10,9 +10,9 @@ import com.google.common.collect.ImmutableSet;
 import com.jrako.command.RakoCommand;
 import com.jrako.command.RakoCommandType;
 import com.jrako.controller.RakoControllerException;
-import com.jrako.controller.RawRakoController;
+import com.jrako.controller.RakoController;
 
-abstract public class RakoEthernetController implements RawRakoController {
+abstract public class RakoEthernetController implements RakoController {
 
     private static final Set<RakoCommandType> UNSUPPORTED;
     static {

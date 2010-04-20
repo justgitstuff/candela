@@ -11,6 +11,8 @@ import com.candela.Scene;
 public class RakoRoom implements Room {
 
     static final RakoRoom UNSET = new RakoRoom();
+    static final RakoRoom MASTER = new RakoRoom(0, "Master", "master", new ArrayList<RakoScene>(),
+            new ArrayList<RakoChannel>());
 
     private final int id;
     private final String name;
