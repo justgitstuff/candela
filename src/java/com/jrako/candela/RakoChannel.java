@@ -62,4 +62,9 @@ public class RakoChannel implements Channel {
         this.room = room;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

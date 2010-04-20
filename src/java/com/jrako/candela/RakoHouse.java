@@ -66,4 +66,9 @@ public class RakoHouse implements House {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

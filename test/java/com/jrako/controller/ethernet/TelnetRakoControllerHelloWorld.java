@@ -2,9 +2,6 @@ package com.jrako.controller.ethernet;
 
 import org.junit.Test;
 
-import com.jrako.command.RakoCommandType;
-import com.jrako.command.RakoResult;
-
 public class TelnetRakoControllerHelloWorld {
 
     private static final String RAKO_HOST = "192.168.1.78";
@@ -12,17 +9,18 @@ public class TelnetRakoControllerHelloWorld {
 
     @Test
     public void simpleRakoCommand() throws Exception {
-        TelnetRakoController controller = new TelnetRakoController(RAKO_HOST, RAKO_PORT);
-        controller.connect();
-        RakoResult result = controller.execute(RakoCommandType.SCENE, 1);
-        System.out.println(result);
-
-        Thread.sleep(4000);
-        result = controller.execute(RakoCommandType.SCENE, 0);
-        System.out.println(result);
-
-        Thread.sleep(4000);
-        controller.close();
+        // TelnetRakoController controller = new TelnetRakoController(RAKO_HOST,
+        // RAKO_PORT);
+        // controller.connect();
+        // RakoResult result = controller.execute(RakoCommandType.SCENE, 1);
+        // System.out.println(result);
+        //
+        // Thread.sleep(4000);
+        // result = controller.execute(RakoCommandType.SCENE, 0);
+        // System.out.println(result);
+        //
+        // Thread.sleep(4000);
+        // controller.close();
     }
 
 }

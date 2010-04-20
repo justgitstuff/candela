@@ -62,4 +62,9 @@ public class RakoScene implements Scene {
         this.room = room;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

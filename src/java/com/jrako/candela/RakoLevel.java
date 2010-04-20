@@ -34,4 +34,9 @@ public class RakoLevel implements Level {
         return levelValue;
     }
 
+    @Override
+    public String toString() {
+        return Integer.toString(getLevelValue());
+    }
+
 }

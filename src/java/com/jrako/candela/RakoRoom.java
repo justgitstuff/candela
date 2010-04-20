@@ -93,4 +93,9 @@ public class RakoRoom implements Room {
         this.house = house;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
+
 }

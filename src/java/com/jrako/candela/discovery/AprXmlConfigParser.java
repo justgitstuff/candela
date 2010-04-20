@@ -39,9 +39,9 @@ class AprXmlConfigParser {
     private RakoRoom processRoom(XMLTag roomTag) {
         final List<RakoScene> scenes = Lists.newArrayList();
         final List<RakoChannel> channels = Lists.newArrayList();
-        String title = roomTag.gotoChild("title").getText();
-        String type = roomTag.gotoChild("type").getText();
-        int id = Integer.parseInt(roomTag.getAttribute("id"));
+        String title = roomTag.gotoChild("Title").getText();
+        String type = roomTag.gotoParent().gotoChild("Type").getText();
+        int id = Integer.parseInt(roomTag.gotoParent().getAttribute("id"));
         roomTag.forEach(new CallBack() {
             public void execute(XMLTag sceneTag) {
                 RakoScene scene = processScene(sceneTag);
