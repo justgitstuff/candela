@@ -24,7 +24,7 @@ public class TelnetRakoController extends RakoEthernetController {
     private OutputStream outputStream;
     private LineIterator lineIterator;
 
-    TelnetRakoController(String hostName, int port) {
+    public TelnetRakoController(String hostName, int port) {
         super(hostName, port);
         client = new TelnetClient();
         client.registerSpyStream(System.out);

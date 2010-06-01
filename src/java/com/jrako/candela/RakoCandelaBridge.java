@@ -18,6 +18,7 @@ import com.candela.Level;
 import com.candela.Room;
 import com.candela.Scene;
 import com.candela.control.ChannelController;
+import com.candela.control.ControllerGroup;
 import com.candela.control.HouseController;
 import com.candela.control.RoomController;
 import com.google.common.collect.Lists;
@@ -26,10 +27,11 @@ import com.jrako.command.RakoCommand;
 import com.jrako.command.RakoResult;
 import com.jrako.command.result.InvalidResult;
 import com.jrako.command.result.StatusResult;
+import com.jrako.controller.PesimisticRakoControllerAdapter;
 import com.jrako.controller.RakoController;
 import com.jrako.controller.RakoControllerException;
 
-public class RakoCandelaBridge implements HouseController, RoomController, ChannelController {
+public class RakoCandelaBridge implements ControllerGroup, HouseController, RoomController, ChannelController {
 
     private final Map<Integer, RakoHouse> houses = Maps.newHashMap();
     private final Map<Integer, RakoRoom> rooms = Maps.newHashMap();
@@ -40,6 +42,10 @@ public class RakoCandelaBridge implements HouseController, RoomController, Chann
     private RakoChannel controllerChannel = RakoChannel.UNSET;
 
     private RakoController controller;
+
+    public RakoCandelaBridge(RakoController controller) {
+        controller = new PesimisticRakoControllerAdapter(controller);
+    }
 
     public void initialise() throws RakoControllerException {
         RakoCommand command = newInstance(STATUS);
@@ -142,6 +148,21 @@ public class RakoCandelaBridge implements HouseController, RoomController, Chann
                 throw new RakoCommandException("Command execution failed: " + result);
             }
         }
+    }
+
+    @Override
+    public ChannelController getChannelController() {
+        return this;
+    }
+
+    @Override
+    public HouseController getHouseController() {
+        return this;
+    }
+
+    @Override
+    public RoomController getRoomController() {
+        return this;
     }
 
 }

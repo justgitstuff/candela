@@ -1,33 +1,40 @@
 package com.jrako.command;
 
+import static com.jrako.command.RakoCommandArgument.OPTIONAL;
+import static com.jrako.command.RakoCommandArgument.REQUIRED;
+import static com.jrako.command.RakoCommandOrdinate.CHANNEL_ID;
+import static com.jrako.command.RakoCommandOrdinate.HOUSE_ID;
+import static com.jrako.command.RakoCommandOrdinate.NONE;
+import static com.jrako.command.RakoCommandOrdinate.ROOM_ID;
+
 public enum RakoCommandType {
 
     /** */
-    ADDRESS("AD", RakoCommandArgument.REQUIRED),
+    ADDRESS("AD", REQUIRED),
     /** */
-    BAUD("BA", RakoCommandArgument.REQUIRED),
+    BAUD("BA", REQUIRED),
     /** */
-    CHANNEL("CH", RakoCommandArgument.OPTIONAL),
+    CHANNEL("CH", OPTIONAL, ROOM_ID),
     /** */
-    COMMAND("CO", RakoCommandArgument.OPTIONAL),
+    COMMAND("CO", OPTIONAL),
     /** */
-    DATA("DA", RakoCommandArgument.REQUIRED),
+    DATA("DA", REQUIRED),
     /** */
     ECHO("EC"),
     /** */
-    HOUSE("HO", RakoCommandArgument.REQUIRED),
+    HOUSE("HO", REQUIRED),
     /** */
-    LEVEL("L", RakoCommandArgument.REQUIRED),
+    LEVEL("L", REQUIRED, CHANNEL_ID),
     /** */
     NOECHO("NO"),
     /** */
-    OFF("OF"),
+    OFF("OF", ROOM_ID),
     /** */
     RESET("RE"),
     /** */
-    ROOM("RO", RakoCommandArgument.OPTIONAL),
+    ROOM("RO", OPTIONAL, HOUSE_ID),
     /** */
-    SCENE("SC", RakoCommandArgument.REQUIRED),
+    SCENE("SC", REQUIRED, ROOM_ID),
     /** */
     STATUS("STA"),
     /** */
@@ -41,13 +48,24 @@ public enum RakoCommandType {
 
     private final RakoCommand defaultCommand;
 
+    private final RakoCommandOrdinate ordinate;
+
     private RakoCommandType(String shortCode) {
         this(shortCode, RakoCommandArgument.NONE);
     }
 
+    private RakoCommandType(String shortCode, RakoCommandOrdinate ordinate) {
+        this(shortCode, RakoCommandArgument.NONE, ordinate);
+    }
+
     private RakoCommandType(String shortCode, RakoCommandArgument signature) {
+        this(shortCode, signature, NONE);
+    }
+
+    private RakoCommandType(String shortCode, RakoCommandArgument signature, RakoCommandOrdinate ordinate) {
         this.signature = signature;
         this.shortCode = shortCode;
+        this.ordinate = ordinate;
         if (signature == RakoCommandArgument.NONE) {
             defaultCommand = new RakoCommand(this);
         } else {
@@ -65,6 +83,10 @@ public enum RakoCommandType {
 
     public RakoCommand getDefaultCommand() {
         return defaultCommand;
+    }
+
+    public RakoCommandOrdinate getOrdinate() {
+        return ordinate;
     }
 
 }
