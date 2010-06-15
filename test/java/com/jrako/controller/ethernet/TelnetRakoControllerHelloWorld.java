@@ -2,25 +2,25 @@ package com.jrako.controller.ethernet;
 
 import org.junit.Test;
 
-public class TelnetRakoControllerHelloWorld {
+import com.candela.ControllerGroupFactory;
+import com.candela.DefaultControllerGroupFactory;
+import com.candela.DefaultHouseFactory;
+import com.candela.House;
+import com.candela.HouseFactory;
+import com.candela.control.ControllerGroup;
+import com.candela.control.HouseController;
 
-    private static final String RAKO_HOST = "192.168.1.78";
-    private static final int RAKO_PORT = 9761;
+public class TelnetRakoControllerHelloWorld {
 
     @Test
     public void simpleRakoCommand() throws Exception {
-        // TelnetRakoController controller = new TelnetRakoController(RAKO_HOST,
-        // RAKO_PORT);
-        // controller.connect();
-        // RakoResult result = controller.execute(RakoCommandType.SCENE, 1);
-        // System.out.println(result);
-        //
-        // Thread.sleep(4000);
-        // result = controller.execute(RakoCommandType.SCENE, 0);
-        // System.out.println(result);
-        //
-        // Thread.sleep(4000);
-        // controller.close();
+        HouseFactory houseFactory = new DefaultHouseFactory();
+        House house = houseFactory.newInstance();
+
+        ControllerGroupFactory controlFactory = new DefaultControllerGroupFactory();
+        ControllerGroup controllerGroup = controlFactory.newInstance();
+        HouseController houseController = controllerGroup.getHouseController();
+        houseController.off(house);
     }
 
 }

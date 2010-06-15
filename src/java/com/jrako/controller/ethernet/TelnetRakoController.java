@@ -46,6 +46,9 @@ public class TelnetRakoController extends RakoEthernetController {
 
     @Override
     public RakoResult execute(RakoCommand command) throws RakoControllerException {
+        if (!client.isConnected()) {
+            connect();
+        }
         if (commandDoesNotRequireArgument(command)) {
             return internalExecute(command.getType());
         } else {

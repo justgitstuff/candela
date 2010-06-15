@@ -41,10 +41,10 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
     private RakoRoom controllerRoom = RakoRoom.UNSET;
     private RakoChannel controllerChannel = RakoChannel.UNSET;
 
-    private RakoController controller;
+    private final RakoController controller;
 
     public RakoCandelaBridge(RakoController controller) {
-        controller = new PesimisticRakoControllerAdapter(controller);
+        this.controller = new PesimisticRakoControllerAdapter(controller);
     }
 
     public void initialise() throws RakoControllerException {
@@ -86,7 +86,6 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
             execute(commands);
         } catch (RakoControllerException e) {
             throw new RakoCommandException("Error executing room off command", e);
-
         }
     }
 
@@ -101,7 +100,6 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
             execute(commands);
         } catch (RakoControllerException e) {
             throw new RakoCommandException("Error executing set scene command", e);
-
         }
     }
 
