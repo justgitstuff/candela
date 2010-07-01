@@ -7,6 +7,9 @@ import static com.jrako.command.RakoCommandOrdinate.HOUSE_ID;
 import static com.jrako.command.RakoCommandOrdinate.NONE;
 import static com.jrako.command.RakoCommandOrdinate.ROOM_ID;
 
+import com.jrako.command.result.MonadicResultResolver;
+import com.jrako.command.result.StatusResultResolver;
+
 public enum RakoCommandType {
 
     /** */
@@ -36,7 +39,7 @@ public enum RakoCommandType {
     /** */
     SCENE("SC", REQUIRED, ROOM_ID),
     /** */
-    STATUS("STA"),
+    STATUS("STA", new StatusResultResolver()),
     /** */
     STORE("STO"),
     /** */
@@ -50,22 +53,34 @@ public enum RakoCommandType {
 
     private final RakoCommandOrdinate ordinate;
 
+    private final RakoResultResolver resultResolver;
+
     private RakoCommandType(String shortCode) {
         this(shortCode, RakoCommandArgument.NONE);
     }
 
+    private RakoCommandType(String shortCode, RakoResultResolver resultResolver) {
+        this(shortCode, RakoCommandArgument.NONE, NONE, resultResolver);
+    }
+
     private RakoCommandType(String shortCode, RakoCommandOrdinate ordinate) {
-        this(shortCode, RakoCommandArgument.NONE, ordinate);
+        this(shortCode, RakoCommandArgument.NONE, ordinate, new MonadicResultResolver());
     }
 
     private RakoCommandType(String shortCode, RakoCommandArgument signature) {
-        this(shortCode, signature, NONE);
+        this(shortCode, signature, NONE, new MonadicResultResolver());
     }
 
     private RakoCommandType(String shortCode, RakoCommandArgument signature, RakoCommandOrdinate ordinate) {
+        this(shortCode, signature, ordinate, new MonadicResultResolver());
+    }
+
+    private RakoCommandType(String shortCode, RakoCommandArgument signature, RakoCommandOrdinate ordinate,
+            RakoResultResolver resultResolver) {
         this.signature = signature;
         this.shortCode = shortCode;
         this.ordinate = ordinate;
+        this.resultResolver = resultResolver;
         if (signature == RakoCommandArgument.NONE) {
             defaultCommand = new RakoCommand(this);
         } else {
@@ -87,6 +102,10 @@ public enum RakoCommandType {
 
     public RakoCommandOrdinate getOrdinate() {
         return ordinate;
+    }
+
+    public RakoResultResolver getRakoResultResolver() {
+        return resultResolver;
     }
 
 }

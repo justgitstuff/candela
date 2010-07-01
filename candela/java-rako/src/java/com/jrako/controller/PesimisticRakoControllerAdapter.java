@@ -25,12 +25,15 @@ public class PesimisticRakoControllerAdapter implements RakoController {
     private RakoResult pesimisticallyExecute(RakoCommand command) throws RakoControllerException {
         RakoResult result = InvalidResult.INSTANCE;
         for (int i = 0; i < retryCount; i++) {
+            System.out.println("Try: " + i);
+            // TODO: THis blocks here for some reason
             result = internalController.execute(command);
             if (result != InvalidResult.INSTANCE) {
+                System.out.println("Result is: " + result);
                 break;
             }
+            System.out.println("Trying again: " + retryCount);
         }
         return result;
     }
-
 }

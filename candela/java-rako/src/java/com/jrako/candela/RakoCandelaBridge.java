@@ -47,7 +47,9 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         this.controller = new PesimisticRakoControllerAdapter(controller);
     }
 
-    public void initialise() throws RakoControllerException {
+    @Override
+    public void initialise(House... confHouses) {
+        populateMaps(confHouses);
         RakoCommand command = newInstance(STATUS);
         RakoResult result = controller.execute(command);
         if (!result.equals(InvalidResult.INSTANCE)) {
@@ -61,13 +63,7 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
     @Override
     public void off(House house) {
         RakoHouse rakoHouse = (RakoHouse) house;
-        List<RakoCommand> commands = Lists.newArrayList();
-        if (!controllerHouse.equals(rakoHouse)) {
-            commands.add(newInstance(HOUSE, rakoHouse.getId()));
-        }
-        if (!controllerRoom.equals(RakoRoom.MASTER)) {
-            commands.add(newInstance(ROOM, RakoRoom.MASTER.getId()));
-        }
+        List<RakoCommand> commands = prepareContext(rakoHouse);
         commands.add(newInstance(OFF));
         try {
             execute(commands);
@@ -116,38 +112,6 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         }
     }
 
-    private List<RakoCommand> prepareContext(Room room) {
-        RakoRoom rakoRoom = (RakoRoom) room;
-        RakoHouse rakoHouse = (RakoHouse) room.getHouse();
-        List<RakoCommand> commands = Lists.newArrayList();
-        if (!controllerHouse.equals(rakoHouse)) {
-            commands.add(newInstance(HOUSE, rakoHouse.getId()));
-        }
-        if (!controllerRoom.equals(rakoRoom)) {
-            commands.add(newInstance(ROOM, rakoRoom.getId()));
-        }
-        return commands;
-    }
-
-    private List<RakoCommand> prepareContext(Channel channel) {
-        prepareContext(channel.getRoom());
-        RakoChannel rakoChannel = (RakoChannel) channel;
-        List<RakoCommand> commands = Lists.newArrayList();
-        if (!controllerChannel.equals(rakoChannel)) {
-            commands.add(newInstance(CHANNEL, rakoChannel.getId()));
-        }
-        return commands;
-    }
-
-    private void execute(List<RakoCommand> commands) throws RakoControllerException {
-        for (RakoCommand command : commands) {
-            RakoResult result = controller.execute(command);
-            if (result.equals(InvalidResult.INSTANCE)) {
-                throw new RakoCommandException("Command execution failed: " + result);
-            }
-        }
-    }
-
     @Override
     public ChannelController getChannelController() {
         return this;
@@ -161,6 +125,64 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
     @Override
     public RoomController getRoomController() {
         return this;
+    }
+
+    private void populateMaps(House... confHouses) {
+        for (House house : confHouses) {
+            RakoHouse rakoHouse = (RakoHouse) house;
+            houses.put(rakoHouse.getId(), rakoHouse);
+            for (Room room : house.getRooms()) {
+                RakoRoom rakoRoom = (RakoRoom) room;
+                rooms.put(rakoRoom.getId(), rakoRoom);
+                for (Channel channel : room.getChannels()) {
+                    RakoChannel rakoChannel = (RakoChannel) channel;
+                    channels.put(rakoChannel.getId(), rakoChannel);
+                }
+            }
+        }
+    }
+
+    private List<RakoCommand> prepareContext(RakoHouse house, RakoRoom room, RakoChannel channel) {
+        List<RakoCommand> commands = Lists.newArrayList();
+        if (controllerHouse == null || !controllerHouse.equals(house)) {
+            commands.add(newInstance(HOUSE, house.getId()));
+        }
+        if (controllerRoom == null || !controllerRoom.equals(room)) {
+            commands.add(newInstance(ROOM, room.getId()));
+        }
+        if (controllerChannel == null || !controllerChannel.equals(channel)) {
+            commands.add(newInstance(CHANNEL, channel.getId()));
+        }
+        return commands;
+    }
+
+    private List<RakoCommand> prepareContext(RakoHouse rakoHouse) {
+        List<RakoCommand> commands = prepareContext(rakoHouse, RakoRoom.MASTER, RakoChannel.MASTER);
+        return commands;
+    }
+
+    private List<RakoCommand> prepareContext(Room room) {
+        RakoRoom rakoRoom = (RakoRoom) room;
+        RakoHouse rakoHouse = (RakoHouse) room.getHouse();
+        List<RakoCommand> commands = prepareContext(rakoHouse, rakoRoom, RakoChannel.MASTER);
+        return commands;
+    }
+
+    private List<RakoCommand> prepareContext(Channel channel) {
+        RakoChannel rakoChannel = (RakoChannel) channel;
+        RakoRoom rakoRoom = (RakoRoom) channel.getRoom();
+        RakoHouse rakoHouse = (RakoHouse) rakoRoom.getHouse();
+        List<RakoCommand> commands = prepareContext(rakoHouse, rakoRoom, rakoChannel);
+        return commands;
+    }
+
+    private void execute(List<RakoCommand> commands) throws RakoControllerException {
+        for (RakoCommand command : commands) {
+            RakoResult result = controller.execute(command);
+            if (result.equals(InvalidResult.INSTANCE)) {
+                throw new RakoCommandException("Command execution failed: " + result);
+            }
+        }
     }
 
 }

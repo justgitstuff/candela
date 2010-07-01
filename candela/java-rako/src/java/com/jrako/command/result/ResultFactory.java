@@ -8,6 +8,8 @@ public class ResultFactory {
 
     public RakoResult newResult(RakoCommandType command, String input) throws RakoControllerException {
         RakoResult result;
+        System.out.println("C" + command);
+        System.out.println("C" + input);
         switch (command) {
         case STATUS:
             result = new StatusResult(input);

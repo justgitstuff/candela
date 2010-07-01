@@ -6,6 +6,7 @@ import com.candela.Room;
 public class RakoChannel implements Channel {
 
     static final RakoChannel UNSET = new RakoChannel();
+    static final RakoChannel MASTER = new RakoChannel(0, "All channels");
 
     private final int id;
     private final String name;

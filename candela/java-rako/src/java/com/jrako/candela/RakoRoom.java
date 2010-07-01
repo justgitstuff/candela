@@ -7,18 +7,19 @@ import com.candela.Channel;
 import com.candela.House;
 import com.candela.Room;
 import com.candela.Scene;
+import com.google.common.collect.Lists;
 
 public class RakoRoom implements Room {
 
     static final RakoRoom UNSET = new RakoRoom();
-    static final RakoRoom MASTER = new RakoRoom(0, "Master", "master", new ArrayList<RakoScene>(),
+    static final RakoRoom MASTER = new RakoRoom(0, "All rooms", "master", new ArrayList<RakoScene>(),
             new ArrayList<RakoChannel>());
 
     private final int id;
     private final String name;
     private final String type;
-    private final List<? extends Scene> scenes;
-    private final List<? extends Channel> channels;
+    private final List<RakoScene> scenes;
+    private final List<RakoChannel> channels;
     private RakoHouse house;
 
     private RakoRoom() {
@@ -29,13 +30,18 @@ public class RakoRoom implements Room {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.scenes = scenes;
-        this.channels = channels;
-        for (RakoScene scene : scenes) {
-            scene.setRoom(this);
-        }
+
+        RakoChannel allChannels = new RakoChannel(0, "All channels");
+        allChannels.setRoom(this);
+        this.channels = Lists.newArrayList(allChannels);
         for (RakoChannel channel : channels) {
             channel.setRoom(this);
+            this.channels.add(channel);
+        }
+
+        this.scenes = Lists.newArrayList(scenes);
+        for (RakoScene scene : scenes) {
+            scene.setRoom(this);
         }
     }
 

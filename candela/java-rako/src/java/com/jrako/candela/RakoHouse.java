@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.candela.House;
 import com.candela.Room;
+import com.google.common.collect.Lists;
 
 public class RakoHouse implements House {
 
@@ -12,7 +13,7 @@ public class RakoHouse implements House {
     static final RakoHouse MASTER = new RakoHouse(0, new ArrayList<RakoRoom>());
 
     private final int id;
-    private final List<? extends Room> rooms;
+    private final List<RakoRoom> rooms;
 
     private RakoHouse() {
         this(-1, new ArrayList<RakoRoom>());
@@ -20,9 +21,13 @@ public class RakoHouse implements House {
 
     public RakoHouse(int id, List<RakoRoom> rooms) {
         this.id = id;
-        this.rooms = rooms;
+        RakoRoom allRooms = new RakoRoom(0, "All rooms", "master", new ArrayList<RakoScene>(),
+                new ArrayList<RakoChannel>());
+        allRooms.setHouse(this);
+        this.rooms = Lists.newArrayList(allRooms);
         for (RakoRoom room : rooms) {
             room.setHouse(this);
+            this.rooms.add(room);
         }
     }
 

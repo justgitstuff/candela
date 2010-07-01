@@ -13,13 +13,12 @@ import com.jrako.command.RakoCommand;
 import com.jrako.command.RakoCommandArgument;
 import com.jrako.command.RakoCommandType;
 import com.jrako.command.RakoResult;
-import com.jrako.command.result.ResultFactory;
+import com.jrako.command.RakoResultResolver;
 import com.jrako.controller.RakoControllerException;
 
 public class TelnetRakoController extends RakoEthernetController {
 
     private final TelnetClient client;
-    private final ResultFactory factory = new ResultFactory();
     private InputStream inputStream;
     private OutputStream outputStream;
     private LineIterator lineIterator;
@@ -27,7 +26,7 @@ public class TelnetRakoController extends RakoEthernetController {
     public TelnetRakoController(String hostName, int port) {
         super(hostName, port);
         client = new TelnetClient();
-        client.registerSpyStream(System.out);
+        client.registerSpyStream(System.err);
     }
 
     @Override
@@ -46,13 +45,18 @@ public class TelnetRakoController extends RakoEthernetController {
 
     @Override
     public RakoResult execute(RakoCommand command) throws RakoControllerException {
-        if (!client.isConnected()) {
-            connect();
-        }
-        if (commandDoesNotRequireArgument(command)) {
-            return internalExecute(command.getType());
-        } else {
-            return internalExecute(command.getType(), command.getArgument());
+        try {
+            if (!client.isConnected()) {
+                connect();
+            }
+            if (commandDoesNotRequireArgument(command)) {
+                return internalExecute(command.getType());
+            } else {
+                return internalExecute(command.getType(), command.getArgument());
+            }
+        } catch (Throwable t) {
+            close();
+            throw new RakoControllerException(t);
         }
     }
 
@@ -77,12 +81,8 @@ public class TelnetRakoController extends RakoEthernetController {
     }
 
     private RakoResult readResult(RakoCommandType command) throws RakoControllerException {
-        lineIterator.nextLine();
-        String input = lineIterator.nextLine(); // Echo
-        System.out.println("From the bridge: " + input);
-        String bracket = lineIterator.nextLine();
-        System.out.println("Should be a bracket: " + bracket);
-        RakoResult result = factory.newResult(command, input);
+        RakoResultResolver resolver = command.getRakoResultResolver();
+        RakoResult result = resolver.resolve(lineIterator);
         return result;
     }
 

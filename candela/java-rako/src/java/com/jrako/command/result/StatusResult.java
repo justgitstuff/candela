@@ -20,14 +20,19 @@ public class StatusResult implements RakoResult {
     private final int group;
 
     StatusResult(String input) throws RakoControllerException {
-        try {
-            Matcher matcher = STATUS_PATTERN.matcher(input);
-            house = Integer.parseInt(matcher.group(1));
-            room = Integer.parseInt(matcher.group(2));
-            channel = Integer.parseInt(matcher.group(3));
-            group = Integer.parseInt(matcher.group(4));
-        } catch (NumberFormatException nfX) {
-            throw new RakoControllerException("Could not understand: " + input, nfX);
+        System.out.println("StatusResult input: '" + input + "'");
+        Matcher matcher = STATUS_PATTERN.matcher(input);
+        if (matcher.matches()) {
+            try {
+                house = Integer.parseInt(matcher.group(1));
+                room = Integer.parseInt(matcher.group(2));
+                channel = Integer.parseInt(matcher.group(3));
+                group = Integer.parseInt(matcher.group(4));
+            } catch (NumberFormatException nfX) {
+                throw new RakoControllerException("Could not understand: " + input, nfX);
+            }
+        } else {
+            throw new RakoControllerException("Could not understand: " + input);
         }
     }
 
