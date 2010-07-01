@@ -26,7 +26,6 @@ public class TelnetRakoController extends RakoEthernetController {
     public TelnetRakoController(String hostName, int port) {
         super(hostName, port);
         client = new TelnetClient();
-        client.registerSpyStream(System.err);
     }
 
     @Override

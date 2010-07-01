@@ -33,6 +33,7 @@ import com.jrako.controller.RakoControllerException;
 
 public class RakoCandelaBridge implements ControllerGroup, HouseController, RoomController, ChannelController {
 
+    // TODO: This should cache
     private final Map<Integer, RakoHouse> houses = Maps.newHashMap();
     private final Map<Integer, RakoRoom> rooms = Maps.newHashMap();
     private final Map<Integer, RakoChannel> channels = Maps.newHashMap();
@@ -73,6 +74,13 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
     }
 
     @Override
+    public void on(House house) {
+        for (Room room : house.getRooms()) {
+            on(room);
+        }
+    }
+
+    @Override
     public void off(Room room) {
         RakoRoom rakoRoom = (RakoRoom) room;
         List<RakoCommand> commands = Lists.newArrayList();
@@ -83,6 +91,12 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         } catch (RakoControllerException e) {
             throw new RakoCommandException("Error executing room off command", e);
         }
+    }
+
+    @Override
+    public void on(Room room) {
+        Scene scene = room.getScenes().get(0);
+        setScene(scene);
     }
 
     @Override
@@ -104,7 +118,7 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         RakoLevel rakoLevel = (RakoLevel) level;
         List<RakoCommand> commands = Lists.newArrayList();
         commands.addAll(prepareContext(channel));
-        commands.add(newInstance(LEVEL, rakoLevel.getLevelValue()));
+        commands.add(newInstance(LEVEL, rakoLevel.getRakoLevelValue()));
         try {
             execute(commands);
         } catch (RakoControllerException e) {
@@ -181,6 +195,17 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
             RakoResult result = controller.execute(command);
             if (result.equals(InvalidResult.INSTANCE)) {
                 throw new RakoCommandException("Command execution failed: " + result);
+            }
+            switch (command.getType()) {
+            case HOUSE:
+                controllerHouse = houses.get(command.getArgument());
+                break;
+            case ROOM:
+                controllerRoom = rooms.get(command.getArgument());
+                break;
+            case CHANNEL:
+                controllerChannel = channels.get(command.getArgument());
+                break;
             }
         }
     }

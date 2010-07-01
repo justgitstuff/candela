@@ -3,11 +3,14 @@ package com.jrako.command.result;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 import com.jrako.command.RakoResult;
 import com.jrako.controller.RakoControllerException;
 
 public class StatusResult implements RakoResult {
 
+    private static final Logger LOG = Logger.getLogger(StatusResult.class);
     private static final String STATUS_PATTERN_STR = "^HO:([0-9]{3}) RO:([0-9]{4}) CH:([0-9]{3}) GR:([0-9]{3})$";
     private static final Pattern STATUS_PATTERN = Pattern.compile(STATUS_PATTERN_STR);
 
@@ -20,7 +23,7 @@ public class StatusResult implements RakoResult {
     private final int group;
 
     StatusResult(String input) throws RakoControllerException {
-        System.out.println("StatusResult input: '" + input + "'");
+        LOG.debug("StatusResult input: '" + input + "'");
         Matcher matcher = STATUS_PATTERN.matcher(input);
         if (matcher.matches()) {
             try {

@@ -6,4 +6,6 @@ public interface HouseController {
 
     void off(House house);
 
+    void on(House house);
+
 }

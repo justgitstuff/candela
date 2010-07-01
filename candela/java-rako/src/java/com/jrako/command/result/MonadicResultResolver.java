@@ -11,10 +11,9 @@ public class MonadicResultResolver implements RakoResultResolver {
     @Override
     public RakoResult resolve(LineIterator lines) {
         RakoResult result = InvalidResult.INSTANCE;
-        String echo = lines.nextLine();
+        lines.nextLine(); // echo
         String input = lines.nextLine();
-        String bracket = lines.nextLine();
-        System.err.println("Should be a bracket: " + bracket);
+        lines.nextLine(); // bracket
         if ("Invalid!".equals(input)) {
             result = InvalidResult.INSTANCE;
         } else if ("OK".equals(input)) {

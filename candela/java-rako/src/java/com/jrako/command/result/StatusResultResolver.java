@@ -11,17 +11,14 @@ public class StatusResultResolver implements RakoResultResolver {
     @Override
     public RakoResult resolve(LineIterator lines) {
         RakoResult result = null;
-        String echo = lines.nextLine();
+        lines.nextLine(); // echo
         String input = lines.nextLine();
         try {
             result = new StatusResult(input);
-            input = lines.nextLine();
-            System.err.println("Should be OK: " + input);
-            input = lines.nextLine();
-            System.err.println("Should be a bracket: " + input);
+            lines.nextLine(); // OK
+            lines.nextLine(); // bracket
         } catch (RakoControllerException e) {
-            String bracket = lines.nextLine();
-            System.err.println("Should be a bracket: " + bracket);
+            lines.nextLine(); // bracket
             if ("Invalid!".equals(input)) {
                 result = InvalidResult.INSTANCE;
             } else if ("OK".equals(input)) {
