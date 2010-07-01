@@ -4,6 +4,6 @@ import com.candela.House;
 
 public interface HouseController {
 
-    public void off(House house);
+    void off(House house);
 
 }

@@ -5,6 +5,6 @@ import com.candela.Level;
 
 public interface ChannelController {
 
-    public void setChannelLevel(Channel channel, Level level);
+    void setChannelLevel(Channel channel, Level level);
 
 }

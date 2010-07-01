@@ -5,8 +5,8 @@ import com.candela.Scene;
 
 public interface RoomController {
 
-    public void off(Room room);
+    void off(Room room);
 
-    public void setScene(Scene scene);
+    void setScene(Scene scene);
 
 }
