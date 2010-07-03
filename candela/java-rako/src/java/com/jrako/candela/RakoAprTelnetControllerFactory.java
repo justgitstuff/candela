@@ -4,8 +4,8 @@ import com.candela.ConfigurationException;
 import com.candela.GenericFactory;
 import com.candela.control.ControllerGroup;
 import com.jrako.candela.discovery.AprIpAddressResolver;
-import com.jrako.controller.PesimisticRakoControllerAdapter;
-import com.jrako.controller.ethernet.TelnetRakoController;
+import com.jrako.control.stateful.PesimisticRakoClientAdapter;
+import com.jrako.control.stateful.tcpip.TelnetRakoClient;
 
 public class RakoAprTelnetControllerFactory implements GenericFactory<ControllerGroup> {
 
@@ -15,8 +15,8 @@ public class RakoAprTelnetControllerFactory implements GenericFactory<Controller
         AprIpAddressResolver ipAddressResolver = new AprIpAddressResolver();
         ipAddressResolver.initialise();
         String address = ipAddressResolver.resolveIpAddress();
-        TelnetRakoController telnet = new TelnetRakoController(address, TELNET_PORT);
-        PesimisticRakoControllerAdapter adapter = new PesimisticRakoControllerAdapter(telnet);
+        TelnetRakoClient telnet = new TelnetRakoClient(address, TELNET_PORT);
+        PesimisticRakoClientAdapter adapter = new PesimisticRakoClientAdapter(telnet);
         RakoCandelaBridge bridge = new RakoCandelaBridge(adapter);
         return bridge;
     }

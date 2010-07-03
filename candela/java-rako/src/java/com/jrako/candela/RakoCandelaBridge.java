@@ -1,13 +1,13 @@
 package com.jrako.candela;
 
-import static com.jrako.command.RakoCommand.newInstance;
-import static com.jrako.command.RakoCommandType.CHANNEL;
-import static com.jrako.command.RakoCommandType.HOUSE;
-import static com.jrako.command.RakoCommandType.LEVEL;
-import static com.jrako.command.RakoCommandType.OFF;
-import static com.jrako.command.RakoCommandType.ROOM;
-import static com.jrako.command.RakoCommandType.SCENE;
-import static com.jrako.command.RakoCommandType.STATUS;
+import static com.jrako.control.stateful.command.RakoCommand.newInstance;
+import static com.jrako.control.stateful.command.RakoCommandType.CHANNEL;
+import static com.jrako.control.stateful.command.RakoCommandType.HOUSE;
+import static com.jrako.control.stateful.command.RakoCommandType.LEVEL;
+import static com.jrako.control.stateful.command.RakoCommandType.OFF;
+import static com.jrako.control.stateful.command.RakoCommandType.ROOM;
+import static com.jrako.control.stateful.command.RakoCommandType.SCENE;
+import static com.jrako.control.stateful.command.RakoCommandType.STATUS;
 
 import java.util.List;
 import java.util.Map;
@@ -23,13 +23,13 @@ import com.candela.control.HouseController;
 import com.candela.control.RoomController;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.jrako.command.RakoCommand;
-import com.jrako.command.RakoResult;
-import com.jrako.command.result.InvalidResult;
-import com.jrako.command.result.StatusResult;
-import com.jrako.controller.PesimisticRakoControllerAdapter;
-import com.jrako.controller.RakoController;
-import com.jrako.controller.RakoControllerException;
+import com.jrako.control.RakoException;
+import com.jrako.control.stateful.PesimisticRakoClientAdapter;
+import com.jrako.control.stateful.StatefulRakoClient;
+import com.jrako.control.stateful.command.RakoCommand;
+import com.jrako.control.stateful.result.InvalidResult;
+import com.jrako.control.stateful.result.RakoCommandResult;
+import com.jrako.control.stateful.result.StatusResult;
 
 public class RakoCandelaBridge implements ControllerGroup, HouseController, RoomController, ChannelController {
 
@@ -42,17 +42,17 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
     private RakoRoom controllerRoom = RakoRoom.UNSET;
     private RakoChannel controllerChannel = RakoChannel.UNSET;
 
-    private final RakoController controller;
+    private final StatefulRakoClient controller;
 
-    public RakoCandelaBridge(RakoController controller) {
-        this.controller = new PesimisticRakoControllerAdapter(controller);
+    public RakoCandelaBridge(StatefulRakoClient controller) {
+        this.controller = new PesimisticRakoClientAdapter(controller);
     }
 
     @Override
     public void initialise(House... confHouses) {
         populateMaps(confHouses);
         RakoCommand command = newInstance(STATUS);
-        RakoResult result = controller.execute(command);
+        RakoCommandResult result = controller.execute(command);
         if (!result.equals(InvalidResult.INSTANCE)) {
             StatusResult status = (StatusResult) result;
             controllerHouse = houses.get(status.getHouse());
@@ -68,7 +68,7 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         commands.add(newInstance(OFF));
         try {
             execute(commands);
-        } catch (RakoControllerException e) {
+        } catch (RakoException e) {
             throw new RakoCommandException("Error executing house off command", e);
         }
     }
@@ -88,7 +88,7 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         commands.add(newInstance(OFF));
         try {
             execute(commands);
-        } catch (RakoControllerException e) {
+        } catch (RakoException e) {
             throw new RakoCommandException("Error executing room off command", e);
         }
     }
@@ -108,7 +108,7 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         commands.add(newInstance(SCENE, rakoScene.getId()));
         try {
             execute(commands);
-        } catch (RakoControllerException e) {
+        } catch (RakoException e) {
             throw new RakoCommandException("Error executing set scene command", e);
         }
     }
@@ -121,7 +121,7 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         commands.add(newInstance(LEVEL, rakoLevel.getRakoLevelValue()));
         try {
             execute(commands);
-        } catch (RakoControllerException e) {
+        } catch (RakoException e) {
             throw new RakoCommandException("Error executing channel level command", e);
         }
     }
@@ -190,9 +190,9 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         return commands;
     }
 
-    private void execute(List<RakoCommand> commands) throws RakoControllerException {
+    private void execute(List<RakoCommand> commands) throws RakoException {
         for (RakoCommand command : commands) {
-            RakoResult result = controller.execute(command);
+            RakoCommandResult result = controller.execute(command);
             if (result.equals(InvalidResult.INSTANCE)) {
                 throw new RakoCommandException("Command execution failed: " + result);
             }
