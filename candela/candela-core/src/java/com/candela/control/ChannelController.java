@@ -7,4 +7,6 @@ public interface ChannelController {
 
     void setChannelLevel(Channel channel, Level level);
 
+    Level newLevel(float value);
+
 }
