@@ -41,4 +41,14 @@ public class PesimisticRakoClientAdapter implements StatefulRakoClient {
         return result;
     }
 
+    @Override
+    public void close() throws RakoException {
+        internalController.close();
+    }
+
+    @Override
+    public void connect() throws RakoException {
+        internalController.connect();
+    }
+
 }

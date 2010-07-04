@@ -9,6 +9,10 @@ import com.jrako.control.stateful.result.RakoCommandResult;
  */
 public interface StatefulRakoClient {
 
+    void connect() throws RakoException;
+
     RakoCommandResult execute(RakoCommand command) throws RakoException;
+
+    void close() throws RakoException;
 
 }

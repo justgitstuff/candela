@@ -27,10 +27,6 @@ abstract public class AbstractTcpIpRakoClient implements StatefulRakoClient {
         this.port = port;
     }
 
-    abstract public void connect() throws RakoException;
-
-    abstract public void close() throws RakoException;
-
     void validateCommandForController(RakoCommand command) throws RakoException {
         if (UNSUPPORTED.contains(command.getType())) {
             throw new RakoException("Command type '" + command.getType() + "' not supported by "
