@@ -141,6 +141,11 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         return this;
     }
 
+    @Override
+    public Level newLevel(float value) {
+        return RakoLevel.valueOf(value);
+    }
+
     private void populateMaps(House... confHouses) {
         for (House house : confHouses) {
             RakoHouse rakoHouse = (RakoHouse) house;
