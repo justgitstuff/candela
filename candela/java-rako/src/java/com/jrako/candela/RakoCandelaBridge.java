@@ -18,7 +18,6 @@ import com.candela.Level;
 import com.candela.Room;
 import com.candela.Scene;
 import com.candela.control.ChannelController;
-import com.candela.control.ControllerGroup;
 import com.candela.control.HouseController;
 import com.candela.control.RoomController;
 import com.google.common.collect.Lists;
@@ -31,7 +30,7 @@ import com.jrako.control.stateful.result.InvalidResult;
 import com.jrako.control.stateful.result.RakoCommandResult;
 import com.jrako.control.stateful.result.StatusResult;
 
-public class RakoCandelaBridge implements ControllerGroup, HouseController, RoomController, ChannelController {
+public class RakoCandelaBridge implements HouseController, RoomController, ChannelController {
 
     // TODO: This should cache
     private final Map<Integer, RakoHouse> houses = Maps.newHashMap();
@@ -124,21 +123,6 @@ public class RakoCandelaBridge implements ControllerGroup, HouseController, Room
         } catch (RakoException e) {
             throw new RakoCommandException("Error executing channel level command", e);
         }
-    }
-
-    @Override
-    public ChannelController getChannelController() {
-        return this;
-    }
-
-    @Override
-    public HouseController getHouseController() {
-        return this;
-    }
-
-    @Override
-    public RoomController getRoomController() {
-        return this;
     }
 
     @Override

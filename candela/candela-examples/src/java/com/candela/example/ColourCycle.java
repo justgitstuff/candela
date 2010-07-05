@@ -7,14 +7,13 @@ import java.util.Properties;
 import org.junit.Test;
 
 import com.candela.Channel;
-import com.candela.ControllerGroupFactory;
-import com.candela.DefaultControllerGroupFactory;
+import com.candela.ControllerFactory;
+import com.candela.DefaultControllerFactory;
 import com.candela.DefaultHouseFactory;
 import com.candela.House;
 import com.candela.HouseFactory;
 import com.candela.Room;
 import com.candela.control.ChannelController;
-import com.candela.control.ControllerGroup;
 
 public class ColourCycle {
 
@@ -58,9 +57,8 @@ public class ColourCycle {
         HouseFactory houseFactory = new DefaultHouseFactory();
         House house = houseFactory.newInstance();
 
-        ControllerGroupFactory controlFactory = new DefaultControllerGroupFactory(house);
-        ControllerGroup controllerGroup = controlFactory.newInstance();
-        ChannelController channelController = controllerGroup.getChannelController();
+        ControllerFactory controlFactory = new DefaultControllerFactory(house);
+        ChannelController channelController = controlFactory.newChannelController();
 
         Room room = house.getRooms().get(roomId);
         System.out.println(room);

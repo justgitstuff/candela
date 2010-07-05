@@ -1,15 +1,11 @@
 package com.candela.control;
 
-import com.candela.House;
-
-public interface ControllerGroup {
+public interface ControllerGroup extends Controller {
 
     HouseController getHouseController();
 
     RoomController getRoomController();
 
     ChannelController getChannelController();
-
-    void initialise(House... houses);
 
 }

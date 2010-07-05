@@ -19,7 +19,7 @@ public class GenericClassLoadingFactory<T> implements GenericFactory<T> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public T newInstance() throws ConfigurationException {
+    public T newInstance() {
         T made = null;
         String clazzName = resolveClassName();
         try {

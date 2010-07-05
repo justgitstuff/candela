@@ -2,6 +2,6 @@ package com.candela;
 
 public interface GenericFactory<T> {
 
-    public T newInstance() throws ConfigurationException;
+    public T newInstance();
 
 }
