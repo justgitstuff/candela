@@ -1,6 +1,5 @@
 package com.jrako.candela;
 
-import com.candela.ConfigurationException;
 import com.candela.ControllerFactory;
 import com.candela.control.ChannelController;
 import com.candela.control.HouseController;
@@ -16,17 +15,12 @@ public class RakoAprTelnetControllerFactory implements ControllerFactory {
     private RakoCandelaBridge bridge;
 
     public void initialise() {
-        try {
-            AprIpAddressResolver ipAddressResolver = new AprIpAddressResolver();
-            ipAddressResolver.initialise();
-            String address = ipAddressResolver.resolveIpAddress();
-            TelnetRakoClient telnet = new TelnetRakoClient(address, TELNET_PORT);
-            PesimisticRakoClientAdapter adapter = new PesimisticRakoClientAdapter(telnet);
-            bridge = new RakoCandelaBridge(adapter);
-        } catch (ConfigurationException e) {
-            e.printStackTrace();
-            // TODO
-        }
+        AprIpAddressResolver ipAddressResolver = new AprIpAddressResolver();
+        ipAddressResolver.initialise();
+        String address = ipAddressResolver.resolveIpAddress();
+        TelnetRakoClient telnet = new TelnetRakoClient(address, TELNET_PORT);
+        PesimisticRakoClientAdapter adapter = new PesimisticRakoClientAdapter(telnet);
+        bridge = new RakoCandelaBridge(adapter);
     }
 
     @Override
