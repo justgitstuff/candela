@@ -14,17 +14,15 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.candela.ConfigurationException;
 import com.candela.House;
-import com.candela.discovery.HouseConfigurationResolver;
 
-public class AprHouseConfigurationResolver implements HouseConfigurationResolver {
+class AprHomeConfigurationResolver {
 
     private static final String HOUSE_ID_PROPERTY_KEY = "com.jrako.apr.house.id";
     private static final int DEFAULT_HOUSE_ID = 1;
 
     private int houseId = DEFAULT_HOUSE_ID;
 
-    @Override
-    public House resolve() throws ConfigurationException {
+    House resolve() throws ConfigurationException {
         updateHouseId();
         AprIpAddressResolver ipAddressResolver = new AprIpAddressResolver();
         ipAddressResolver.initialise();
@@ -60,4 +58,5 @@ public class AprHouseConfigurationResolver implements HouseConfigurationResolver
         }
         return xml;
     }
+
 }

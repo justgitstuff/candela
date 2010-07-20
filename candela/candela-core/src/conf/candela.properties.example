@@ -1,4 +1,4 @@
-com.candela.house.factory.class=com.jrako.candela.RakoHouseFactory
+com.candela.home.browser.factory.class=com.jrako.candela.discovery.RakoHomeBrowserFactory
 com.candela.controller.factory.class=com.jrako.candela.RakoAprTelnetControllerFactory
 
 com.jrako.apr.netbios.name=RAKOBRIDGE

@@ -9,11 +9,10 @@ import org.junit.Test;
 import com.candela.Channel;
 import com.candela.ControllerFactory;
 import com.candela.DefaultControllerFactory;
-import com.candela.DefaultHouseFactory;
-import com.candela.House;
-import com.candela.HouseFactory;
-import com.candela.Room;
 import com.candela.control.ChannelController;
+import com.candela.discovery.DefaultHomeBrowserFactory;
+import com.candela.discovery.HomeBrowser;
+import com.candela.discovery.HomeBrowserFactory;
 
 public class ColourCycle {
 
@@ -23,10 +22,11 @@ public class ColourCycle {
     private final int cycleCount;
     private final float increment;
 
-    private final int roomId;
-    private final int redChannelId;
-    private final int greenChannelId;
-    private final int blueChannelId;
+    private final String houseId;
+    private final String roomId;
+    private final String redChannelId;
+    private final String greenChannelId;
+    private final String blueChannelId;
 
     private final float brightness;
 
@@ -39,10 +39,11 @@ public class ColourCycle {
         cycleCount = Integer.parseInt(properties.getProperty("cycles"));
         increment = Float.parseFloat(properties.getProperty("increment"));
 
-        roomId = Integer.parseInt(properties.getProperty("room.id"));
-        redChannelId = Integer.parseInt(properties.getProperty("red.channel.id"));
-        greenChannelId = Integer.parseInt(properties.getProperty("green.channel.id"));
-        blueChannelId = Integer.parseInt(properties.getProperty("blue.channel.id"));
+        houseId = properties.getProperty("house.id");
+        roomId = properties.getProperty("room.id");
+        redChannelId = properties.getProperty("red.channel.id");
+        greenChannelId = properties.getProperty("green.channel.id");
+        blueChannelId = properties.getProperty("blue.channel.id");
 
         brightness = Float.parseFloat(properties.getProperty("brightness"));
     }
@@ -54,18 +55,19 @@ public class ColourCycle {
 
     @Test
     private void start() throws Exception {
-        HouseFactory houseFactory = new DefaultHouseFactory();
-        House house = houseFactory.newInstance();
+        HomeBrowserFactory factory = new DefaultHomeBrowserFactory();
+        HomeBrowser browser = factory.newInstance();
 
-        ControllerFactory controlFactory = new DefaultControllerFactory(house);
+        ControllerFactory controlFactory = DefaultControllerFactory.newInstance(browser);
         ChannelController channelController = controlFactory.newChannelController();
 
-        Room room = house.getRooms().get(roomId);
-        System.out.println(room);
+        browser.gotoHouse(houseId).gotoRoom(roomId);
 
-        Channel redChannel = room.getChannels().get(redChannelId);
-        Channel greenChannel = room.getChannels().get(greenChannelId);
-        Channel blueChannel = room.getChannels().get(blueChannelId);
+        System.out.println(browser.getLocation());
+
+        Channel redChannel = browser.gotoChannel(redChannelId).getChannel();
+        Channel greenChannel = browser.gotoChannel(greenChannelId).getChannel();
+        Channel blueChannel = browser.gotoChannel(blueChannelId).getChannel();
         System.out.println(redChannel);
         System.out.println(greenChannel);
         System.out.println(blueChannel);

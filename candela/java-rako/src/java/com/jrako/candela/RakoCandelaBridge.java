@@ -10,7 +10,6 @@ import static com.jrako.control.stateful.command.RakoCommandType.SCENE;
 import static com.jrako.control.stateful.command.RakoCommandType.STATUS;
 
 import java.util.List;
-import java.util.Map;
 
 import com.candela.Channel;
 import com.candela.House;
@@ -20,8 +19,8 @@ import com.candela.Scene;
 import com.candela.control.ChannelController;
 import com.candela.control.HouseController;
 import com.candela.control.RoomController;
+import com.candela.discovery.HomeBrowser;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.jrako.control.RakoException;
 import com.jrako.control.stateful.PesimisticRakoClientAdapter;
 import com.jrako.control.stateful.StatefulRakoClient;
@@ -32,31 +31,27 @@ import com.jrako.control.stateful.result.StatusResult;
 
 public class RakoCandelaBridge implements HouseController, RoomController, ChannelController {
 
-    // TODO: This should cache
-    private final Map<Integer, RakoHouse> houses = Maps.newHashMap();
-    private final Map<Integer, RakoRoom> rooms = Maps.newHashMap();
-    private final Map<Integer, RakoChannel> channels = Maps.newHashMap();
-
     private RakoHouse controllerHouse = RakoHouse.UNSET;
     private RakoRoom controllerRoom = RakoRoom.UNSET;
     private RakoChannel controllerChannel = RakoChannel.UNSET;
 
     private final StatefulRakoClient controller;
+    private final HomeBrowser browser;
 
-    public RakoCandelaBridge(StatefulRakoClient controller) {
+    RakoCandelaBridge(StatefulRakoClient controller, HomeBrowser browser) {
         this.controller = new PesimisticRakoClientAdapter(controller);
+        this.browser = browser;
     }
 
     @Override
-    public void initialise(House... confHouses) {
-        populateMaps(confHouses);
+    public void initialise() {
         RakoCommand command = newInstance(STATUS);
         RakoCommandResult result = controller.execute(command);
         if (!result.equals(InvalidResult.INSTANCE)) {
             StatusResult status = (StatusResult) result;
-            controllerHouse = houses.get(status.getHouse());
-            controllerRoom = rooms.get(status.getRoom());
-            controllerChannel = channels.get(status.getChannel());
+            controllerHouse = getHouseById(status.getHouse());
+            controllerRoom = getRoomById(status.getRoom());
+            controllerChannel = getChannelById(status.getChannel());
         }
     }
 
@@ -130,21 +125,6 @@ public class RakoCandelaBridge implements HouseController, RoomController, Chann
         return RakoLevel.valueOf(value);
     }
 
-    private void populateMaps(House... confHouses) {
-        for (House house : confHouses) {
-            RakoHouse rakoHouse = (RakoHouse) house;
-            houses.put(rakoHouse.getId(), rakoHouse);
-            for (Room room : house.getRooms()) {
-                RakoRoom rakoRoom = (RakoRoom) room;
-                rooms.put(rakoRoom.getId(), rakoRoom);
-                for (Channel channel : room.getChannels()) {
-                    RakoChannel rakoChannel = (RakoChannel) channel;
-                    channels.put(rakoChannel.getId(), rakoChannel);
-                }
-            }
-        }
-    }
-
     private List<RakoCommand> prepareContext(RakoHouse house, RakoRoom room, RakoChannel channel) {
         List<RakoCommand> commands = Lists.newArrayList();
         if (controllerHouse == null || !controllerHouse.equals(house)) {
@@ -187,16 +167,31 @@ public class RakoCandelaBridge implements HouseController, RoomController, Chann
             }
             switch (command.getType()) {
             case HOUSE:
-                controllerHouse = houses.get(command.getArgument());
+                controllerHouse = getHouseById(command.getArgument());
                 break;
             case ROOM:
-                controllerRoom = rooms.get(command.getArgument());
+                controllerRoom = getRoomById(command.getArgument());
                 break;
             case CHANNEL:
-                controllerChannel = channels.get(command.getArgument());
+                controllerChannel = getChannelById(command.getArgument());
                 break;
             }
         }
+    }
+
+    private RakoHouse getHouseById(int houseId) {
+        browser.gotoHouse(Integer.toString(houseId));
+        return (RakoHouse) browser.getHouse();
+    }
+
+    private RakoRoom getRoomById(int roomId) {
+        browser.gotoRoom(Integer.toString(roomId));
+        return (RakoRoom) browser.getRoom();
+    }
+
+    private RakoChannel getChannelById(int channelId) {
+        browser.gotoChannel(Integer.toString(channelId));
+        return (RakoChannel) browser.getChannel();
     }
 
 }
