@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.junit.Test;
-
 import com.candela.Channel;
 import com.candela.ControllerFactory;
 import com.candela.DefaultControllerFactory;
+import com.candela.House;
+import com.candela.Room;
 import com.candela.control.ChannelController;
 import com.candela.discovery.DefaultHomeBrowserFactory;
 import com.candela.discovery.HomeBrowser;
@@ -31,7 +31,7 @@ public class ColourCycle {
     private final float brightness;
 
     private ColourCycle() throws Exception {
-        InputStream stream = getClass().getResourceAsStream("colour-cycle.properties");
+        InputStream stream = getClass().getResourceAsStream("/colour-cycle.properties");
         Properties properties = new Properties();
         properties.load(stream);
 
@@ -53,7 +53,6 @@ public class ColourCycle {
         cycle.start();
     }
 
-    @Test
     private void start() throws Exception {
         HomeBrowserFactory factory = new DefaultHomeBrowserFactory();
         HomeBrowser browser = factory.newInstance();
@@ -61,8 +60,14 @@ public class ColourCycle {
         ControllerFactory controlFactory = DefaultControllerFactory.newInstance(browser);
         ChannelController channelController = controlFactory.newChannelController();
 
-        browser.gotoHouse(houseId).gotoRoom(roomId);
+        browser.gotoHouse(houseId);
+        House house = browser.getHouse();
+        System.out.println(house.getRooms());
+        System.out.println(browser.getLocation());
 
+        browser.gotoRoom("Lounge");
+        Room room = browser.getRoom();
+        System.out.println(room);
         System.out.println(browser.getLocation());
 
         Channel redChannel = browser.gotoChannel(redChannelId).getChannel();
@@ -101,5 +106,4 @@ public class ColourCycle {
             }
         }
     }
-
 }

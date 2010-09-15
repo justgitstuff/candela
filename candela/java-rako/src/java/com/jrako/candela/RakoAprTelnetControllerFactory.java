@@ -23,6 +23,7 @@ public class RakoAprTelnetControllerFactory implements ControllerFactory {
         TelnetRakoClient telnet = new TelnetRakoClient(address, TELNET_PORT);
         PesimisticRakoClientAdapter adapter = new PesimisticRakoClientAdapter(telnet);
         bridge = new RakoCandelaBridge(adapter, browser);
+        bridge.initialise();
     }
 
     @Override

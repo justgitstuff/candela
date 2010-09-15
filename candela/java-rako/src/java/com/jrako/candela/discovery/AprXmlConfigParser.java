@@ -21,6 +21,7 @@ class AprXmlConfigParser {
     AprXmlConfigParser(int houseId, String xmlData) {
         this.houseId = houseId;
         this.xmlData = xmlData;
+        System.out.println(xmlData);
     }
 
     House parseXml() {

@@ -27,6 +27,27 @@ class RakoHomeBrowser implements HomeBrowser {
 
     RakoHomeBrowser(RakoHouse house) {
         this.house = house;
+        for (Room room : house.getRooms()) {
+            RakoRoom rakoRoom = (RakoRoom) room;
+            rooms.put(rakoRoom.getName(), rakoRoom);
+            rooms.put(String.valueOf(rakoRoom.getId()), rakoRoom);
+
+            Map<String, RakoChannel> mapChannels = Maps.newHashMap();
+            roomChannels.put(rakoRoom, mapChannels);
+            for (Channel channel : room.getChannels()) {
+                RakoChannel rakoChannel = (RakoChannel) channel;
+                mapChannels.put(rakoChannel.getName(), rakoChannel);
+                mapChannels.put(String.valueOf(rakoChannel.getId()), rakoChannel);
+            }
+
+            Map<String, RakoScene> mapScenes = Maps.newHashMap();
+            roomScenes.put(rakoRoom, mapScenes);
+            for (Scene scene : room.getScenes()) {
+                RakoScene rakoScene = (RakoScene) scene;
+                mapScenes.put(rakoScene.getName(), rakoScene);
+                mapScenes.put(String.valueOf(rakoScene.getId()), rakoScene);
+            }
+        }
     }
 
     @Override
@@ -112,14 +133,14 @@ class RakoHomeBrowser implements HomeBrowser {
         if (localHouse == null) {
             return "/";
         } else if (localRoom == null) {
-            return "/house" + localHouse.getName();
+            return "/house/" + localHouse.getName();
         } else if (localChannel != null) {
-            return "/house" + localHouse.getName() + "/room" + localRoom.getName() + "/channel/"
+            return "/house/" + localHouse.getName() + "/room/" + localRoom.getName() + "/channel/"
                     + localChannel.getName();
         } else if (localScene != null) {
-            return "/house" + localHouse.getName() + "/room" + localRoom.getName() + "/scene/" + localScene.getName();
+            return "/house/" + localHouse.getName() + "/room/" + localRoom.getName() + "/scene/" + localScene.getName();
         } else {
-            return "/house" + localHouse.getName() + "/room" + localRoom.getName();
+            return "/house/" + localHouse.getName() + "/room/" + localRoom.getName();
         }
     }
 

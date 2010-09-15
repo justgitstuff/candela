@@ -41,9 +41,9 @@ public class RakoCommand {
     @Override
     public String toString() {
         if (type.getSignature() == RakoCommandArgument.NONE || !hasArgument()) {
-            return type.name();
+            return type.getShortCode();
         } else {
-            return type.name() + "(" + argument + ")";
+            return type.getShortCode() + ": " + Integer.toString(argument);
         }
     }
 

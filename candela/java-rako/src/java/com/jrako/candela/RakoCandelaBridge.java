@@ -161,6 +161,7 @@ public class RakoCandelaBridge implements HouseController, RoomController, Chann
 
     private void execute(List<RakoCommand> commands) throws RakoException {
         for (RakoCommand command : commands) {
+            System.out.println(command);
             RakoCommandResult result = controller.execute(command);
             if (result.equals(InvalidResult.INSTANCE)) {
                 throw new RakoCommandException("Command execution failed: " + result);

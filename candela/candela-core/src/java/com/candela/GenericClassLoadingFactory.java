@@ -12,7 +12,7 @@ public class GenericClassLoadingFactory<T> implements GenericFactory<T> {
     private final String factoryClassNameKey;
     private final String propertiesFileName;
 
-    protected GenericClassLoadingFactory(String factoryClassNameKey, String propertiesFileName) {
+    public GenericClassLoadingFactory(String factoryClassNameKey, String propertiesFileName) {
         this.factoryClassNameKey = factoryClassNameKey;
         this.propertiesFileName = propertiesFileName;
     }
@@ -23,8 +23,7 @@ public class GenericClassLoadingFactory<T> implements GenericFactory<T> {
         T made = null;
         String clazzName = resolveClassName();
         try {
-            Class<? extends GenericFactory<T>> factoryClazz = (Class<? extends GenericFactory<T>>) Class
-                    .forName(clazzName);
+            Class<? extends T> factoryClazz = (Class<? extends T>) Class.forName(clazzName);
             made = newInstance(factoryClazz);
         } catch (ClassNotFoundException e) {
             throw new ConfigurationException("Failed to load class identified by '" + clazzName + "'", e);
@@ -32,11 +31,10 @@ public class GenericClassLoadingFactory<T> implements GenericFactory<T> {
         return made;
     }
 
-    private T newInstance(Class<? extends GenericFactory<T>> factoryClazz) throws ConfigurationException {
+    private T newInstance(Class<? extends T> factoryClazz) throws ConfigurationException {
         T made = null;
         try {
-            GenericFactory<? extends T> factoryDelegate = factoryClazz.newInstance();
-            made = factoryDelegate.newInstance();
+            made = factoryClazz.newInstance();
         } catch (InstantiationException e) {
             throw new ConfigurationException("Could not instantiate factory of type '" + factoryClazz + "'", e);
         } catch (IllegalAccessException e) {
