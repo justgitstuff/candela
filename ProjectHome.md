@@ -1,0 +1,1 @@
+Provides an abstraction to interface with home automation systems using Java. Also provides specific concrete implementations of the API for use with 3rd party home automation systems.
